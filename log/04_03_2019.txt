@@ -1,0 +1,7 @@
+{date: "07/03/2019", value: "T"},
+{date: "07/03/2019", value: "T"},
+{date: "07/03/2019", value: "T"},
+{date: "07/03/2019", value: "T"},
+{date: "07/03/2019", value: "T"},
+{date: "07/03/2019", value: "T"},
+{date: "07/03/2019", value: "F"},

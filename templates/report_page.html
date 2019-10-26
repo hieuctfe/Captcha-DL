@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report page</title>
+    <style>
+table {
+  border-collapse: collapse;
+  width: 500px;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+</head>
+<body>
+<div id="start_date"></div>
+<div id="total"></div>
+
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Total</th>
+        <th>Success</th>
+        <th>Fail</th>
+        <th>Rate</th>
+    </tr>
+    </thead>
+    <tbody id="detail">
+
+    </tbody>
+</table>
+
+<script>
+    // innit start date
+    let data = [{{data | safe}}]
+    let start_date = '{{start_date}}'
+    start_date = start_date.replace(".txt","").replace("_","/").replace("_","/")
+    document.getElementById("start_date").innerText = `Start Date: ${start_date}`
+
+    Array.prototype.groupBy = function (prop) {
+        return this.reduce(function (groups, item) {
+            const val = item[prop]
+            groups[val] = groups[val] || []
+            groups[val].push(item)
+            return groups
+        }, {})
+    }
+
+    // sort data
+    data.sort(function (a,b) {
+       let arr1 = a.date.split("/")
+        let arr2 = b.date.split("/")
+        return  new Date(arr2[2],arr2[1],arr2[0]) - new Date(arr1[2],arr1[1],arr1[0])
+    })
+
+    // render date
+    let result = data.groupBy("date")
+    let totalF = 0
+    let totalT = 0
+    console.log(data.groupBy("date"))
+    for (key in result) {
+        let F = 0
+        let T = 0
+        for (i = 0; i < result[key].length; i++) {
+            if (result[key][i].value == "F") {
+                F += 1;
+            } else {
+                T += 1;
+            }
+        }
+        let rate = ((T*100)/(T+F)).toFixed(2)
+        let html = `<tr><td>${key}</td><td>${T+F}</td><td>${T}</td><td>${F}</td><td>${rate}%</td></tr>`
+        let container = document.getElementById("detail")
+        container.insertAdjacentHTML( 'beforeend', html);
+        totalF += F
+        totalT += T
+    }
+
+    // render total
+    let totalRate = ((totalT*100)/(totalT+totalF)).toFixed(2)
+    let containerTotal = document.getElementById("total")
+            containerTotal.insertAdjacentHTML( 'beforeend', `Total Count: ${totalT+totalF} - Total Success: ${totalT} - Total Fail: ${totalF} - Rate: ${totalRate}%`);
+</script>
+</body>
+</html>
