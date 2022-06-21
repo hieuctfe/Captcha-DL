@@ -24,7 +24,7 @@ MarkupSafe==1.1.0
 matplotlib==3.0.2
 mccabe==0.6.1
 mock==2.0.0
-numpy==1.16.0
+numpy==1.22.0
 opencv-python==3.4.5.20
 package-name==0.1
 pbr==5.1.2
